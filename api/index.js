@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRoutes from "./routes/user.route.js";
+import authRoutes from "./routes/auth.route.js";
 
 dotenv.config();
 
@@ -10,10 +11,15 @@ const PORT = 3000;
 
 // Middleware
 app.use(express.json());
+// Log every incoming API request
+app.use((req, res, next) => {
+    console.log("REQUEST RECEIVED:", req.method, req.originalUrl);
+    next();
+});
 
 // Register routes
 app.use("/api/users", userRoutes);
-
+app.use("/api/auth", authRoutes);
 // Home route
 app.get("/", (req, res) => {
     res.send("Welcome to Real Estate API!");
